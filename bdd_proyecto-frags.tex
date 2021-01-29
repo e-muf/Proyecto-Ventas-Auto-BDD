@@ -1,0 +1,344 @@
+\newcounter{fragmentCounter}
+\newcommand{\tx}[1]{\text{#1}}   
+
+% Declaring table name variable to reuse them
+\newcommand{\cpm}{COPIA MANUAL}
+\newcommand{\tbr}{TABLA REPLICADA}
+\newcommand{\pais}{PAIS}
+\newcommand{\sucursal}{SUCURSAL}
+\newcommand{\auto}{AUTO}
+\newcommand{\modelo}{MODELO}
+\newcommand{\marca}{MARCA}
+\newcommand{\sauto}{STATUS\_AUTO}
+\newcommand{\cliente}{CLIENTE}
+\newcommand{\autop}{AUTO\_PARTICULAR}
+\newcommand{\autoc}{AUTO\_CARGA}
+\newcommand{\pagoa}{PAGO\_AUTO}
+\newcommand{\tarjeta}{TARJETA\_CLIENTE}
+\newcommand{\historico}{HISTORICO\_STATUS\_AUTO}
+\newcommand{\fragNameBuilder}[3]{#1\_#2\_#3}      % Params:
+                                                  % #1: table name
+                                                  % #2: pdb
+                                                  % #3: node
+
+{
+  \setlength\tabcolsep{1mm}
+  \def\arraystretch{2}          % Do not define globally (for that reason we
+                                % enclose table inside brackets)
+  \begin{longtable}{
+    |C{0.075\linewidth}
+    |C{0.3\linewidth}
+    |C{0.6\linewidth}|}
+  \hline
+  %%%%% Start: Table header 
+  \textbf{Núm frag.} &
+  \textbf{Nombre del fragmento} &
+  \textbf{Expresión algebraica} 
+  \\ \hline
+  %%%%% End: Table header 
+  %
+  % row 1
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \sauto & 
+  \cpm 
+  \\ \hline
+  %
+  % row 2
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  MARCA\_R\_\snI & 
+  \tbr 
+  \\ \hline
+  %
+  % row 3
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  MARCA\_R\_\snII & 
+  \tbr 
+  \\ \hline
+  %
+  % row 4
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  MARCA\_R\_\snIII & 
+  \tbr 
+  \\ \hline
+  %
+  % row 5
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  MARCA\_R\_\snIV & 
+  \tbr 
+  \\ \hline
+  %
+  % row 6
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  MODELO\_R\_\snI & 
+  \tbr 
+  \\ \hline
+  %
+  % row 7
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  MODELO\_R\_\snII & 
+  \tbr 
+  \\ \hline
+  %
+  % row 8
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  MODELO\_R\_\snIII & 
+  \tbr 
+  \\ \hline
+  %
+  % row 9
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  MODELO\_R\_\snIV & 
+  \tbr 
+  \\ \hline  
+  %
+  % row 10
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\pais}{F1}{\snI} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \sigma_{\tx{clave $=$ `AME'}}(\tx{\pais})  
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 11
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\pais}{F2}{\snII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \sigma_{\tx{clave $=$ `EUR'}}(\tx{\pais})  
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 13
+  \rowcolor{Gainsboro!60}
+  &
+  SUCURSAL\_F1' & 
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \sigma_{\tx{clave $< >$ `00000'}}(\tx{SUCURSAL})  
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 14
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\sucursal}{F1}{\snI} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{SUCURSAL\_F1'} \ltimes_{\tx{pais\_id}} 
+      \tx{\fragNameBuilder{\pais}{F1}{\snI}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 15
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\sucursal}{F2}{\snII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{SUCURSAL\_F1'} \ltimes_{\tx{pais\_id}} 
+      \tx{\fragNameBuilder{\pais}{F2}{\snII}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 12
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\sucursal}{F3}{\snIII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \sigma_{\tx{clave $=$ `00000'}}(\tx{SUCURSAL})  
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 17
+  \rowcolor{Gainsboro!60}
+  &
+  AUTO\_F1' & 
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \pi_{\substack{\tx{auto\_id, anio,num\_serie,tipo,precio,fecha\_status,}\\
+      \tx{sucursal\_id,status\_auto\_id,modelo\_id}}}(\tx{\auto})
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 18
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\auto}{F1}{\snI} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{\auto\_F1'} \ltimes_{\tx{sucursal\_id}} 
+      \tx{\fragNameBuilder{\sucursal}{F1}{\snI}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 19
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\auto}{F2}{\snII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{AUTO\_F1'} \ltimes_{\tx{sucursal\_id}} 
+      \tx{\fragNameBuilder{\sucursal}{F2}{\snII}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 16
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\auto}{F3}{\snIV} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \pi_{\tx{auto\_id, foto}}(\tx{\auto})
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 20
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\autop}{F1}{\snI} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{\autop} \ltimes_{\tx{auto\_id}} 
+      \tx{\fragNameBuilder{\auto}{F1}{\snI}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 21
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\autop}{F2}{\snII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{\autop} \ltimes_{\tx{auto\_id}} 
+      \tx{\fragNameBuilder{\auto}{F2}{\snII}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 22
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\autoc}{F1}{\snI} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{\autoc} \ltimes_{\tx{auto\_id}} 
+      \tx{\fragNameBuilder{\auto}{F1}{\snI}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 23
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\autoc}{F2}{\snII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{\autoc} \ltimes_{\tx{auto\_id}} 
+      \tx{\fragNameBuilder{\auto}{F2}{\snII}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 24
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\historico}{F1}{\snIII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \sigma_{\tx{to\_char(fecha\_status,`yyyy') $>$ `2010'}}
+      (\tx{\historico})
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 25
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\historico}{F2}{\snIV} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \sigma_{\tx{to\_char(fecha\_status,`yyyy') $<=$ `2010'}}
+      (\tx{\historico})
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 26
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\cliente}{F1}{\snII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \sigma_{\tx{substr(ap\_paterno,1,1) between `A' and `I'}}
+      (\tx{\cliente})
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 27
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\cliente}{F2}{\snIII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \sigma_{\tx{substr(ap\_paterno,1,1) between `J' and `Q'}}
+      (\tx{\cliente})
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 28
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\cliente}{F3}{\snIV} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \sigma_{\tx{substr(ap\_paterno,1,1) between `R' and `Z'}}
+      (\tx{\cliente})
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 29
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\pagoa}{F1}{\snI} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{\pagoa} \ltimes_{\tx{auto\_id}} 
+      \tx{\fragNameBuilder{\auto}{F1}{\snI}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 30
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\pagoa}{F2}{\snII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \tx{\pagoa} \ltimes_{\tx{auto\_id}} 
+      \tx{\fragNameBuilder{\auto}{F2}{\snII}}
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 31
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\tarjeta}{F1}{\snII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \pi_{\tx{cliente\_id,anio\_expira,mes\_expira,tipo}}
+      (\tx{\tarjeta})
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  %
+  % row 32
+  \stepcounter{fragmentCounter} \arabic{fragmentCounter} &
+  \fragNameBuilder{\tarjeta}{F2}{\snIII} &
+  \begin{minipage}[b]{\linewidth}
+    \begin{equation*}
+      \pi_{\tx{cliente\_id,num\_tarjeta,codigo\_seguridad}}
+      (\tx{\tarjeta})
+    \end{equation*} 
+  \end{minipage} 
+  \\ \hline  
+  \end{longtable}
+}
